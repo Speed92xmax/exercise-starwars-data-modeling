@@ -7,26 +7,29 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+class Product (Base):
+    __tablename__="product"
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    id= Column(Integer,primary_key=True)
+    name= Column(String(100),nullable=False)
+    details= Column(String(250),nullable=False)
+    image_src= Column(String(250),nullable=False)
+    price=Column(Integer,nullable=True)
+    category_product =relationship("category_product")
 
-    def to_dict(self):
-        return {}
+class Category(Base):
+    __tablename__="category"
 
-## Draw from SQLAlchemy base
-render_er(Base, 'diagram.png')
+    id= Column(Integer,primary_key=True)
+    name= Column (String(100),nullable=False)
+    description = Column(String(250),nullable=True)
+    category_product =relationship("category_product")
+
+class CategoryProduct (Base):
+    __tablename__="category_product"
+
+    id= Column( Integer,primary_key=True)
+    product_id= Column(Integer, ForeignKey("product.id"),nullable=False)
+    category_id= Column(Integer, ForeignKey("category.id"),nullable=False)
+
+render_er(Base,'diagam.png')
